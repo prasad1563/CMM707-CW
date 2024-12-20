@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification-service-deployment
+  namespace: meditrack-app-v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notification-service
+  template:
+    metadata:
+      labels:
+        app: notification-service
+    spec:
+      containers:
+      - name: notification-service-container
+        image: 043309327322.dkr.ecr.us-east-1.amazonaws.com/meditrack_app:notification-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 6000
+        envFrom:
+        - configMapRef:
+            name: meditrackapp-config
+        - secretRef:
+            name: meditrackapp-secrets
+        readinessProbe:
+          httpGet:
+            path: /api/auth/health
+            port: 6000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /api/auth/health
+            port: 6000
+          initialDelaySeconds: 15
+          periodSeconds: 20

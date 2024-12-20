@@ -1,0 +1,19 @@
+##  provide app with environment variables or configuration details without hardcoding them into the application code.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: meditrackapp-config
+  namespace: meditrack-app-v1
+data:
+  PATIENT_SERVICE_PORT: "5002"
+  DOCTOR_SERVICE_PORT: "5003"
+  APPOINTMENT_SERVICE_PORT: "5007"
+  NOTIFICATION_SERVICE_PORT: "6000"
+  AUTH_SERVICE_PORT: "5001"
+  AGG_SERVICE_PORT: "5006"
+
+  PATIENT_SERVICE_URL: "http://patient-service.meditrack-app-v1.svc.cluster.local"
+  DOCTOR_SERVICE_URL: "http://doctor-service.meditrack-app-v1.svc.cluster.local"
+  APPOINTMENT_SERVICE_URL: "http://appointment-service.meditrack-app-v1.svc.cluster.local"
+  NOTIFICATION_SERVICE_URL: "http://notification-service.meditrack-app-v1.svc.cluster.local"
+  AUTH_SERVICE_URL: "http://auth-service.meditrack-app-v1.svc.cluster.local"

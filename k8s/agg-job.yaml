@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: agg-job-cron
+  namespace: meditrack-app-v1
+spec:
+  schedule: "*/100 * * * *"  # Runs every 10 minutes
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: agg-job-container
+            image: 043309327322.dkr.ecr.us-east-1.amazonaws.com/meditrack_app:agg-service
+            imagePullPolicy: Always
+            ports:
+            - containerPort: 5006
+            envFrom:
+            - configMapRef:
+                name: meditrackapp-config
+            - secretRef:
+                name: meditrackapp-secrets
+          restartPolicy: OnFailure  # Restart the pod if it fails

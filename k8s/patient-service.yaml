@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: patient-record-service-deployment
+  namespace: meditrack-app-v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: patient-record-service
+  template:
+    metadata:
+      labels:
+        app: patient-record-service
+    spec:
+      containers:
+      - name: patient-record-service-container
+        image: 043309327322.dkr.ecr.us-east-1.amazonaws.com/meditrack_app:patient-service
+        imagePullPolicy: Always
+        ports:
+        - name: http
+        - containerPort: 5002
+        envFrom:
+        - configMapRef:
+            name: meditrackapp-config
+        - secretRef:
+            name: meditrackapp-secrets
+        readinessProbe:
+          httpGet:
+            path: /api/auth/health
+            port: 5002
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /api/auth/health
+            port: 5002
+          initialDelaySeconds: 15
+          periodSeconds: 20

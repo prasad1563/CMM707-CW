@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: doctor-service-deployment
+  namespace: meditrack-app-v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: doctor-service
+  template:
+    metadata:
+      labels:
+        app: doctor-service
+    spec:
+      containers:
+      - name: doctor-service-container
+        image: 043309327322.dkr.ecr.us-east-1.amazonaws.com/meditrack_app:doctor-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 5003
+        envFrom:
+        - configMapRef:
+            name: meditrackapp-config
+        - secretRef:
+            name: meditrackapp-secrets
+        readinessProbe:
+          httpGet:
+            path: /api/auth/health
+            port: 5003
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /api/auth/health
+            port: 5003
+          initialDelaySeconds: 15
+          periodSeconds: 20

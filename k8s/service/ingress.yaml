@@ -1,0 +1,49 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: meditrack-ingress
+  namespace: meditrack-app-v1
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing  # Make the ALB internet-facing
+    alb.ingress.kubernetes.io/target-type: ip  # Use IP-based target (for Kubernetes pods)
+    alb.ingress.kubernetes.io/group.name: meditrack-elb-group
+spec:
+  ingressClassName: alb  # Specifies the ALB ingress class
+  rules:
+    http:
+      paths:
+      - path: /patient-service  # These names are defined in service.yaml file (service port names)
+        pathType: Prefix
+        backend:
+          service:
+            name: meditrack-load-balancer
+            port:
+              number: 80
+      - path: /doctor-service
+        pathType: Prefix
+        backend:
+          service:
+            name: meditrack-load-balancer
+            port:
+              number: 80
+      - path: /appointment-service
+        pathType: Prefix
+        backend:
+          service:
+            name: meditrack-load-balancer
+            port:
+              number: 80
+      - path: /notification-service
+        pathType: Prefix
+        backend:
+          service:
+            name: meditrack-load-balancer
+            port:
+              number: 80
+      - path: /auth-service
+        pathType: Prefix
+        backend:
+          service:
+            name: meditrack-load-balancer
+            port:
+              number: 80

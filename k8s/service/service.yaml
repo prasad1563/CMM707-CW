@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: meditrack-load-balancer
+  namespace: meditrack-app-v1
+spec:
+  selector:
+    app: meditrack
+  type: LoadBalancer
+  ports:
+  - name: patient-service
+    port: 5002
+    targetPort: 5002
+  - name: doctor-service
+    port: 5003
+    targetPort: 5003
+  - name: appointment-service
+    port: 5007
+    targetPort: 5007
+  - name: notification-service
+    port: 6000
+    targetPort: 6000
+  - name: auth-service
+    port: 5001
+    targetPort: 5001
+

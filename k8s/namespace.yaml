@@ -1,0 +1,6 @@
+# namespace.yaml
+# Used 1 namespace for all
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: meditrack-app-v1
